@@ -1,7 +1,8 @@
-
 import java.awt.Color;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import rojerusan.RSPanelsSlider;
 
 /*
@@ -15,16 +16,20 @@ import rojerusan.RSPanelsSlider;
  */
 public class vista extends javax.swing.JFrame {
 
-    /**
-     * Creates new form vista
-     */
+    // Inicializar clases
+    database db = new database();
+    userModel md = new userModel();
+
     public vista() {
         initComponents();
         this.setTitle("Domino");
-        this.setIconImage(new ImageIcon (getClass().getResource("/img/fondos/domino.png")).getImage());
-        this.setSize(800, 429); 
+        this.setIconImage(new ImageIcon(getClass().getResource("/img/fondos/domino.png")).getImage());
+        this.setSize(800, 429);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
+
+        //Inicializar db
+        db.conector();
     }
 
     /**
@@ -36,6 +41,13 @@ public class vista extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        salaEspera = new javax.swing.JFrame();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel15 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
         slider = new rojerusan.RSPanelsSlider();
         panelLogin = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -47,9 +59,9 @@ public class vista extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        user = new javax.swing.JTextField();
+        loginUser = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        password = new javax.swing.JPasswordField();
+        loginPass = new javax.swing.JPasswordField();
         labelRegistro = new javax.swing.JLabel();
         panelRegistro = new javax.swing.JPanel();
         panel = new javax.swing.JPanel();
@@ -62,10 +74,49 @@ public class vista extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        user1 = new javax.swing.JTextField();
+        registroUser = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
-        password1 = new javax.swing.JPasswordField();
+        registroPass = new javax.swing.JPasswordField();
         labelSesion = new javax.swing.JLabel();
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel15.setForeground(new java.awt.Color(50, 69, 89));
+        jLabel15.setText("Domino");
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 40, 140, -1));
+
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel16.setForeground(new java.awt.Color(50, 69, 89));
+        jLabel16.setText("Configuración");
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 200, 150, -1));
+
+        jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(50, 69, 89));
+        jLabel17.setText("Jugar");
+        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 60, -1));
+
+        jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(50, 69, 89));
+        jLabel18.setText("Score");
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 60, -1));
+
+        jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(50, 69, 89));
+        jLabel19.setText("Salir");
+        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(177, 250, 45, -1));
+
+        javax.swing.GroupLayout salaEsperaLayout = new javax.swing.GroupLayout(salaEspera.getContentPane());
+        salaEspera.getContentPane().setLayout(salaEsperaLayout);
+        salaEsperaLayout.setHorizontalGroup(
+            salaEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        salaEsperaLayout.setVerticalGroup(
+            salaEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(0, 0, 0, 0));
@@ -86,6 +137,7 @@ public class vista extends javax.swing.JFrame {
         btnLogin.setBorder(null);
         btnLogin.setBorderPainted(false);
         btnLogin.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnLogin.setFocusable(false);
         btnLogin.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/icon/btn-login-on.png"))); // NOI18N
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,18 +168,18 @@ public class vista extends javax.swing.JFrame {
         jLabel2.setText("User");
         panelLogin.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 180, -1, -1));
 
-        user.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        user.setBorder(null);
-        panelLogin.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 215, 170, -1));
+        loginUser.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        loginUser.setBorder(null);
+        panelLogin.add(loginUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 215, 170, -1));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(53, 73, 94));
         jLabel3.setText("Password");
         panelLogin.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 260, -1, -1));
 
-        password.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        password.setBorder(null);
-        panelLogin.add(password, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 295, 170, 20));
+        loginPass.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        loginPass.setBorder(null);
+        panelLogin.add(loginPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 295, 170, 20));
 
         labelRegistro.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         labelRegistro.setForeground(new java.awt.Color(255, 51, 51));
@@ -196,18 +248,18 @@ public class vista extends javax.swing.JFrame {
         jLabel13.setText("User");
         panel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 180, -1, -1));
 
-        user1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        user1.setBorder(null);
-        panel.add(user1, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 215, 170, -1));
+        registroUser.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        registroUser.setBorder(null);
+        panel.add(registroUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 215, 170, -1));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jLabel14.setForeground(new java.awt.Color(50, 69, 89));
         jLabel14.setText("Password");
         panel.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 260, -1, -1));
 
-        password1.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
-        password1.setBorder(null);
-        panel.add(password1, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 295, 170, 20));
+        registroPass.setFont(new java.awt.Font("Segoe UI", 0, 11)); // NOI18N
+        registroPass.setBorder(null);
+        panel.add(registroPass, new org.netbeans.lib.awtextra.AbsoluteConstraints(535, 295, 170, 20));
 
         labelSesion.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelSesion.setForeground(new java.awt.Color(255, 51, 51));
@@ -262,36 +314,82 @@ public class vista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    void abrirVentana(JFrame frame, int w, int h) {
+        frame.setSize(w, h);
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(this);
+        frame.setVisible(true);
+        frame.setIconImage(new ImageIcon(getClass().getResource("/img/fondos/domino.png")).getImage());
+    }
+
+    void clear() {
+        loginUser.setText("");
+        loginPass.setText("");
+        registroPass.setText("");
+        registroUser.setText("");
+    }
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
-       
+        try {
+            if (registroUser.getText().trim().equalsIgnoreCase("") || registroPass.getText().trim().equalsIgnoreCase("")) {
+                JOptionPane.showMessageDialog(null, "No debe dejar campos vacios");
+            } else {
+                boolean res = md.guardarUser(registroUser.getText().trim(), registroPass.getText().trim());
+
+                if (res) {
+                    JOptionPane.showMessageDialog(null, "Usuario creado !!");
+                    clear();
+                }
+
+            }
+        } catch (Exception e) {
+            System.out.println("Hubo un error");
+        }
     }//GEN-LAST:event_btnRegistroActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
-        // TODO add your handling code here:
+        try {
+            if (loginUser.getText().trim().equalsIgnoreCase("") || loginPass.getText().trim().equalsIgnoreCase("")) {
+                JOptionPane.showMessageDialog(null, "No debe dejar campos vacios");
+            } else {
+                boolean res = md.buscarUser(loginUser.getText().trim(), loginPass.getText().trim());
+
+                if (res) {
+
+                    abrirVentana(salaEspera, 400, 329);
+                    clear();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta");
+                }
+
+            }
+        } catch (Exception e) {
+        }
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void labelRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelRegistroMouseClicked
         slider.setPanelSlider(30, panelRegistro, RSPanelsSlider.DIRECT.RIGHT);
+        clear();
     }//GEN-LAST:event_labelRegistroMouseClicked
 
     private void labelRegistroMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelRegistroMouseMoved
-        labelRegistro.setForeground(new Color(251, 79, 112));
+        //labelRegistro.setForeground(new Color(251, 79, 112));
     }//GEN-LAST:event_labelRegistroMouseMoved
 
     private void labelSesionMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSesionMouseMoved
-        labelSesion.setForeground(new Color(251, 79, 112));
+        //labelSesion.setForeground(new Color(251, 79, 112));
     }//GEN-LAST:event_labelSesionMouseMoved
 
     private void labelSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSesionMouseClicked
         slider.setPanelSlider(30, panelLogin, RSPanelsSlider.DIRECT.DOWN);
+        clear();
     }//GEN-LAST:event_labelSesionMouseClicked
 
     private void panelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseMoved
-        labelRegistro.setForeground(new Color(255, 51, 51));
+        //labelRegistro.setForeground(new Color(255, 51, 51));
     }//GEN-LAST:event_panelMouseMoved
 
     private void panelLoginMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelLoginMouseMoved
-        labelSesion.setForeground(new Color(255, 51, 51));
+        //labelSesion.setForeground(new Color(255, 51, 51));
     }//GEN-LAST:event_panelLoginMouseMoved
 
     /**
@@ -305,7 +403,7 @@ public class vista extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -338,6 +436,11 @@ public class vista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -346,19 +449,21 @@ public class vista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JSeparator jSeparator4;
     private javax.swing.JLabel labelRegistro;
     private javax.swing.JLabel labelSesion;
+    private javax.swing.JPasswordField loginPass;
+    private javax.swing.JTextField loginUser;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JPanel panelRegistro;
-    private javax.swing.JPasswordField password;
-    private javax.swing.JPasswordField password1;
+    private javax.swing.JPasswordField registroPass;
+    private javax.swing.JTextField registroUser;
+    private javax.swing.JFrame salaEspera;
     private rojerusan.RSPanelsSlider slider;
-    private javax.swing.JTextField user;
-    private javax.swing.JTextField user1;
     // End of variables declaration//GEN-END:variables
 }
