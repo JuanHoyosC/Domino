@@ -1,9 +1,21 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu.Separator;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import static javax.swing.SwingConstants.VERTICAL;
 import rojerusan.RSPanelsSlider;
+import static sun.net.www.http.HttpClient.New;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,6 +31,14 @@ public class vista extends javax.swing.JFrame {
     // Inicializar clases
     database db = new database();
     userModel md = new userModel();
+    rotarImg rotar = new rotarImg();
+
+    // Crea las fichas en forma de string
+    ArrayList<String> jugadorFichas = new ArrayList<String>();
+    ArrayList<String> maquinaFichas = new ArrayList<String>();
+    ArrayList<String> maquina2Fichas = new ArrayList<String>();
+    ArrayList<String> fichasSobrante = new ArrayList<String>();
+    ArrayList<String> fichas;
 
     public vista() {
         initComponents();
@@ -27,7 +47,6 @@ public class vista extends javax.swing.JFrame {
         this.setSize(800, 429);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-
         //Inicializar db
         db.conector();
     }
@@ -48,6 +67,11 @@ public class vista extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        frameTablero = new javax.swing.JFrame();
+        tablero = new javax.swing.JPanel();
         slider = new rojerusan.RSPanelsSlider();
         panelLogin = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -85,37 +109,90 @@ public class vista extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(50, 69, 89));
         jLabel15.setText("Domino");
-        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 40, 140, -1));
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 20, 140, -1));
 
         jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(50, 69, 89));
         jLabel16.setText("Configuración");
-        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 200, 150, -1));
+        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 200, 150, -1));
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(50, 69, 89));
-        jLabel17.setText("Jugar");
-        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 60, -1));
+        jLabel17.setText("Jugar 1 vs 2");
+        jLabel17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel17MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 120, 130, -1));
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(50, 69, 89));
         jLabel18.setText("Score");
-        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 160, 60, -1));
+        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(162, 160, 60, -1));
 
         jLabel19.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(50, 69, 89));
         jLabel19.setText("Salir");
-        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(177, 250, 45, -1));
+        jLabel19.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel19.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel19MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(164, 240, 50, -1));
+
+        jLabel20.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(50, 69, 89));
+        jLabel20.setText("Jugar 1 VS 1");
+        jLabel20.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel20.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel20MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 80, 150, -1));
+
+        jLabel22.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondos/domino-icon.png"))); // NOI18N
+        jPanel1.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(288, 30, 40, 40));
+
+        jLabel23.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondos/domino-icon.png"))); // NOI18N
+        jPanel1.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 30, 40, 40));
 
         javax.swing.GroupLayout salaEsperaLayout = new javax.swing.GroupLayout(salaEspera.getContentPane());
         salaEspera.getContentPane().setLayout(salaEsperaLayout);
         salaEsperaLayout.setHorizontalGroup(
             salaEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 384, Short.MAX_VALUE)
         );
         salaEsperaLayout.setVerticalGroup(
             salaEsperaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+
+        tablero.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout tableroLayout = new javax.swing.GroupLayout(tablero);
+        tablero.setLayout(tableroLayout);
+        tableroLayout.setHorizontalGroup(
+            tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1120, Short.MAX_VALUE)
+        );
+        tableroLayout.setVerticalGroup(
+            tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 470, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout frameTableroLayout = new javax.swing.GroupLayout(frameTablero.getContentPane());
+        frameTablero.getContentPane().setLayout(frameTableroLayout);
+        frameTableroLayout.setHorizontalGroup(
+            frameTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tablero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        frameTableroLayout.setVerticalGroup(
+            frameTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(tablero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -123,11 +200,6 @@ public class vista extends javax.swing.JFrame {
 
         panelLogin.setBackground(new java.awt.Color(255, 255, 255));
         panelLogin.setName("panelLogin"); // NOI18N
-        panelLogin.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                panelLoginMouseMoved(evt);
-            }
-        });
         panelLogin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondos/img-fondo2.jpg"))); // NOI18N
@@ -185,11 +257,6 @@ public class vista extends javax.swing.JFrame {
         labelRegistro.setForeground(new java.awt.Color(255, 51, 51));
         labelRegistro.setText("Registrarse");
         labelRegistro.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        labelRegistro.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                labelRegistroMouseMoved(evt);
-            }
-        });
         labelRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 labelRegistroMouseClicked(evt);
@@ -204,11 +271,6 @@ public class vista extends javax.swing.JFrame {
         panel.setBackground(new java.awt.Color(255, 255, 255));
         panel.setName("panelLogin"); // NOI18N
         panel.setPreferredSize(new java.awt.Dimension(800, 400));
-        panel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                panelMouseMoved(evt);
-            }
-        });
         panel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/fondos/img-fondo.jpg"))); // NOI18N
@@ -265,11 +327,6 @@ public class vista extends javax.swing.JFrame {
         labelSesion.setForeground(new java.awt.Color(255, 51, 51));
         labelSesion.setText("Iniciar sesión");
         labelSesion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        labelSesion.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-            public void mouseMoved(java.awt.event.MouseEvent evt) {
-                labelSesionMouseMoved(evt);
-            }
-        });
         labelSesion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 labelSesionMouseClicked(evt);
@@ -314,6 +371,165 @@ public class vista extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Crear las fichas en forma de Strig y las guarda en un arrayList
+    public void generarFichas() {
+        fichas = new ArrayList<String>();
+        for (int i = 0; i < 7; i++) {
+            for (int j = i; j < 7; j++) {
+                fichas.add(i + "-" + j);
+            }
+        }
+    }
+
+    public void distribuirFichas(boolean sw) {
+        // Limpia el arrayList de los elementos que aun pueden contener
+        jugadorFichas.clear();
+        maquinaFichas.clear();
+        maquina2Fichas.clear();
+        fichasSobrante.clear();
+
+        // Si hay una seguda maquina tambien se le reparten fichas 
+        if (sw) {
+
+            repartirFichas(jugadorFichas);
+            repartirFichas(maquinaFichas);
+            repartirFichas(maquina2Fichas);
+            // Si no hay una segunda maquia se le agregara solo a la maquina uno y al jugador
+        } else {
+            repartirFichas(jugadorFichas);
+            repartirFichas(maquinaFichas);
+        }
+
+        // Aqui le agrego las fichas faltantes al arbitro
+        fichasSobrante = fichas;
+    }
+
+    public void repartirFichas(ArrayList array) {
+        while (array.size() != 7 && fichas.size() != 0) {
+            // Aqui se agregaran las fichas de forma aleatorias al jugador
+            int rnd = (int) (Math.random() * fichas.size());
+            array.add(fichas.get(rnd));
+            fichas.remove(rnd);
+        }
+    }
+
+    public void mostrarFichas(boolean sw) {
+        // Limpia el tablero de partidas anteriores
+        tablero.removeAll();
+        // Vuelve a pintar otros objetos (Diferente a las fichas)
+        pintarTablero();
+        // Si hay una segunda maquina, se pintara las fichas
+        if (sw) {
+            dibujarFichasJugador();
+            dibujarFichasMaquina();
+            dibujarFichasMaquina2();
+            dibujarFichasSobrante();
+            // Si no hay una segunda maquina, no se pintara las fichas
+        } else {
+            dibujarFichasJugador();
+            dibujarFichasMaquina();
+            dibujarFichasSobrante();
+        }
+    }
+
+    public void dibujarFichasJugador() {
+        int inicio = 10;
+        // Ciclo que se encarga de añadir todas las fichas del jugador al tablero
+        for (int i = 0; i < jugadorFichas.size(); i++) {
+            // Obtiene el JLabel que retorna la funcion (Se le envia la ruta de la image, el tamaño) y le asigna la posicion en el tablero
+            crearLabel("src/img/img-domino/" + jugadorFichas.get(i) + ".png", 35, 68).setLocation(inicio + i * 50, 550);
+        }
+    }
+
+    public void dibujarFichasMaquina() {
+        int inicio = 10;
+        int contador = 0;
+        int y = 10;
+        // Ciclo que se encarga de añadir todas las fichas de la maquina al tablero
+        for (int i = 0; i < maquinaFichas.size(); i++) {
+            if ((inicio + i * 50) >= 510) {
+                contador = 0;
+                y = 90;
+            }
+            // Obtiene el JLabel que retorna la funcion (Se le envia la ruta de la image, el tamaño) y le asigna la posicion en el tablero
+            crearLabel("src/img/img-domino/volteada.png", 35, 68).setLocation(inicio + contador * 50, y);
+            contador++;
+        }
+    }
+
+    public void dibujarFichasMaquina2() {
+        int inicio = 580;
+        int contador = 0;
+        int y = 10;
+        // Ciclo que se encarga de añadir todas las fichas de la maquina2 al tablero
+        for (int i = 0; i < maquina2Fichas.size(); i++) {
+            if ((inicio + i * 50) >= 1100) {
+                contador = 0;
+                y = 90;
+            }
+            // Obtiene el JLabel que retorna la funcion (Se le envia la ruta de la image, el tamaño) y le asigna la posicion en el tablero
+            crearLabel("src/img/img-domino/volteada.png", 35, 68).setLocation(inicio + contador * 50, y);
+            contador++;
+        }
+    }
+
+    public void dibujarFichasSobrante() {
+        int inicio = 10;
+        // Ciclo que se encarga de añadir todas las fichas que sobran al tablero
+        for (int i = 0; i < fichasSobrante.size(); i++) {
+            // Obtiene el JLabel que retorna la funcion (Se le envia la ruta de la image, el tamaño) y le asigna la posicion en el tablero
+            crearLabel("src/img/img-domino/volteada-90.png", 68, 35).setLocation(1140, inicio + i * 40);
+        }
+    }
+
+    // Dibuja en el tablero todo lo que no sea una ficha
+    public void pintarTablero() {
+        tablero.add(labelTablero("Fichas maquina 0", 200, 150, 150, 25));
+        tablero.add(labelTablero("Fichas maquina 1", 750, 150, 150, 25));
+        tablero.add(labelTablero("Fichas jugador", 480, 520, 150, 25));
+        tablero.add(SeparatorTablero(0, 180, 1120, 10, false));
+        tablero.add(SeparatorTablero(0, 500, 1120, 10, false));
+        tablero.add(SeparatorTablero(560, 0, 12, 180, true));
+        tablero.add(SeparatorTablero(1120, 0, 10, 620, true));
+    }
+
+    // Dibuja los separadores
+    public JSeparator SeparatorTablero(int x, int y, int w, int h, boolean sw) {
+        JSeparator s = new JSeparator();
+        s.setBounds(x, y, w, h);
+        if (sw) {
+            s.setOrientation(SwingConstants.VERTICAL);
+        }
+        return s;
+    }
+
+    // Dibuja los texto que dicen a quien les pertenece las fichas
+    public JLabel labelTablero(String texto, int posx, int posy, int w, int h) {
+        // Retorna label, el texto que contendra, color y fuente
+        JLabel label = new JLabel();
+        label.setText(texto);
+        label.setBounds(posx, posy, w, h);
+        label.setForeground(new Color(53, 73, 94));
+        label.setFont(new java.awt.Font("Segoe UI", Font.BOLD, 18));
+        return label;
+    }
+
+    public JLabel crearLabel(String img, int w, int h) {
+        // Crea el label
+        JLabel label = new JLabel();
+        ImageIcon icon = new ImageIcon(img);
+        // Le agrega el icono al label
+        label.setIcon(icon);
+        // Le da el tamaño al label
+        label.setSize(w, h);
+        // Añade el label al tablero
+        tablero.add(label);
+        // Retorna el label enviado al tablero
+        JLabel labelActual = (JLabel) tablero.getComponent(tablero.getComponentCount() - 1);
+        return labelActual;
+    }
+
+    // Se encarga de abrir las ventanas
     void abrirVentana(JFrame frame, int w, int h) {
         frame.setSize(w, h);
         frame.setResizable(false);
@@ -322,12 +538,15 @@ public class vista extends javax.swing.JFrame {
         frame.setIconImage(new ImageIcon(getClass().getResource("/img/fondos/domino.png")).getImage());
     }
 
-    void clear() {
+    // Limpia los cuadros de textos del login y del registro
+    void limpiar() {
         loginUser.setText("");
         loginPass.setText("");
         registroPass.setText("");
         registroUser.setText("");
     }
+
+
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
         try {
             if (registroUser.getText().trim().equalsIgnoreCase("") || registroPass.getText().trim().equalsIgnoreCase("")) {
@@ -337,7 +556,7 @@ public class vista extends javax.swing.JFrame {
 
                 if (res) {
                     JOptionPane.showMessageDialog(null, "Usuario creado !!");
-                    clear();
+                    limpiar();
                 }
 
             }
@@ -347,16 +566,18 @@ public class vista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegistroActionPerformed
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
+
         try {
             if (loginUser.getText().trim().equalsIgnoreCase("") || loginPass.getText().trim().equalsIgnoreCase("")) {
                 JOptionPane.showMessageDialog(null, "No debe dejar campos vacios");
             } else {
+                // Se encarga de verificar que el usuario este registrado
                 boolean res = md.buscarUser(loginUser.getText().trim(), loginPass.getText().trim());
-
+                // Si el usuario esta registrado se le llevara a la segunda parte
                 if (res) {
-
-                    abrirVentana(salaEspera, 400, 329);
-                    clear();
+                    abrirVentana(salaEspera, 384, 320);
+                    this.setVisible(false);
+                    limpiar();
                 } else {
                     JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta");
                 }
@@ -368,29 +589,36 @@ public class vista extends javax.swing.JFrame {
 
     private void labelRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelRegistroMouseClicked
         slider.setPanelSlider(30, panelRegistro, RSPanelsSlider.DIRECT.RIGHT);
-        clear();
+        limpiar();
     }//GEN-LAST:event_labelRegistroMouseClicked
-
-    private void labelRegistroMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelRegistroMouseMoved
-        //labelRegistro.setForeground(new Color(251, 79, 112));
-    }//GEN-LAST:event_labelRegistroMouseMoved
-
-    private void labelSesionMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSesionMouseMoved
-        //labelSesion.setForeground(new Color(251, 79, 112));
-    }//GEN-LAST:event_labelSesionMouseMoved
 
     private void labelSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelSesionMouseClicked
         slider.setPanelSlider(30, panelLogin, RSPanelsSlider.DIRECT.DOWN);
-        clear();
+        limpiar();
     }//GEN-LAST:event_labelSesionMouseClicked
 
-    private void panelMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelMouseMoved
-        //labelRegistro.setForeground(new Color(255, 51, 51));
-    }//GEN-LAST:event_panelMouseMoved
+    // Boton que se encargara de activar el juego 1vs1
+    private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
+        generarFichas();
+        distribuirFichas(false);
+        mostrarFichas(false);
+        abrirVentana(frameTablero, 1220, 655);
+        limpiar();
+    }//GEN-LAST:event_jLabel20MouseClicked
 
-    private void panelLoginMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelLoginMouseMoved
-        //labelSesion.setForeground(new Color(255, 51, 51));
-    }//GEN-LAST:event_panelLoginMouseMoved
+    // Boton que se encargara de activar el juego 2vs1
+    private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
+        generarFichas();
+        distribuirFichas(true);
+        mostrarFichas(true);
+        abrirVentana(frameTablero, 1220, 655);
+        limpiar();
+    }//GEN-LAST:event_jLabel17MouseClicked
+
+    private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
+        salaEspera.setVisible(false);
+        abrirVentana(this, 800, 420);
+    }//GEN-LAST:event_jLabel19MouseClicked
 
     /**
      * @param args the command line arguments
@@ -430,6 +658,7 @@ public class vista extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnRegistro;
+    private javax.swing.JFrame frameTablero;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -442,6 +671,9 @@ public class vista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -465,5 +697,6 @@ public class vista extends javax.swing.JFrame {
     private javax.swing.JTextField registroUser;
     private javax.swing.JFrame salaEspera;
     private rojerusan.RSPanelsSlider slider;
+    private javax.swing.JPanel tablero;
     // End of variables declaration//GEN-END:variables
 }
