@@ -40,6 +40,10 @@ public class vista extends javax.swing.JFrame {
     ArrayList<String> fichasSobrante = new ArrayList<String>();
     ArrayList<String> fichas;
 
+    // Informacion del jugador
+    String user = "";
+    
+    
     public vista() {
         initComponents();
         this.setTitle("Domino");
@@ -486,7 +490,7 @@ public class vista extends javax.swing.JFrame {
     public void pintarTablero() {
         tablero.add(labelTablero("Fichas maquina 0", 200, 150, 150, 25));
         tablero.add(labelTablero("Fichas maquina 1", 750, 150, 150, 25));
-        tablero.add(labelTablero("Fichas jugador", 480, 520, 150, 25));
+        tablero.add(labelTablero("Fichas del jugador "+ user, 480, 520, 220, 25));
         tablero.add(SeparatorTablero(0, 180, 1120, 10, false));
         tablero.add(SeparatorTablero(0, 500, 1120, 10, false));
         tablero.add(SeparatorTablero(560, 0, 12, 180, true));
@@ -577,6 +581,7 @@ public class vista extends javax.swing.JFrame {
                 if (res) {
                     abrirVentana(salaEspera, 384, 320);
                     this.setVisible(false);
+                    user = loginUser.getText();
                     limpiar();
                 } else {
                     JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrecta");
