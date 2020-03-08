@@ -174,7 +174,7 @@ public class Ficha {
         this.tablero = tablero;
     }
 
-    //Objetos que contienen las fichas
+    //Enviar los Objetos que contienen las fichas
 
     public ArrayList<String> getFichasJugador() {
         return jugadorFichas;

@@ -4,8 +4,11 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -18,15 +21,6 @@ import static javax.swing.SwingConstants.VERTICAL;
 import rojerusan.RSPanelsSlider;
 import static sun.net.www.http.HttpClient.New;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author 57302
- */
 public class vista extends javax.swing.JFrame {
 
     // Inicializar clases
@@ -35,6 +29,7 @@ public class vista extends javax.swing.JFrame {
     rotarImg rotar = new rotarImg();
     tablero table = new tablero();
     Ficha ficha = new Ficha();
+
     // Crea las fichas en forma de string
     ArrayList<String> jugadorFichas = new ArrayList<String>();
     ArrayList<String> maquinaFichas = new ArrayList<String>();
@@ -52,6 +47,15 @@ public class vista extends javax.swing.JFrame {
 
     // Informacion del jugador
     String user = "";
+
+    //Variables para comenzar la partida
+    boolean turno = false;
+    ArrayList<JLabel> fichasTablero = new ArrayList<JLabel>();
+    // Posiciones iniciales de fichas
+    int posIzqX = 480;
+    int posIzqY = 330;
+    int posDerX = 587;
+    int posDerY = 330;
 
     public vista() {
         initComponents();
@@ -191,7 +195,7 @@ public class vista extends javax.swing.JFrame {
         tablero.setLayout(tableroLayout);
         tableroLayout.setHorizontalGroup(
             tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1220, Short.MAX_VALUE)
+            .addGap(0, 1280, Short.MAX_VALUE)
         );
         tableroLayout.setVerticalGroup(
             tableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -202,7 +206,7 @@ public class vista extends javax.swing.JFrame {
         frameTablero.getContentPane().setLayout(frameTableroLayout);
         frameTableroLayout.setHorizontalGroup(
             frameTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(tablero, javax.swing.GroupLayout.DEFAULT_SIZE, 1220, Short.MAX_VALUE)
+            .addComponent(tablero, javax.swing.GroupLayout.DEFAULT_SIZE, 1280, Short.MAX_VALUE)
         );
         frameTableroLayout.setVerticalGroup(
             frameTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -412,34 +416,44 @@ public class vista extends javax.swing.JFrame {
         fichasSobrantesObj.clear();
         posJugadorFichasX.clear();
         posFichaSobrantesY.clear();
+        fichasTablero.clear();
     }
 
     public void comenzarJuego() {
         // Busca quien tiene el par mayor entre la maquina y el jugador
         int mayorJugador = mayor(jugadorFichas);
         int mayorMaquina = mayor(maquinaFichas);
-
+        System.out.println(mayorJugador);
+        System.out.println(mayorMaquina);
+        fichasTablero.clear();
         // Si existe un par mayor 
-        if (mayorJugador >= 0 && mayorMaquina >= 0) {
+        if (mayorJugador >= 0 || mayorMaquina >= 0) {
             // Verifica quien tiene el par mayor, la maquina o el jugador
             if (mayorJugador > mayorMaquina) {
                 // Agrega en el tablero la ficha
                 int pos = jugadorFichas.indexOf(mayorJugador + "-" + mayorJugador);
                 jugadorFichasObj.get(pos).setLocation(550, 305);
+                //Añade a una array las fichas que estan en el tablero
+                fichasTablero.add(jugadorFichasObj.get(pos));
                 // Elimina las ficha en el grupo de fichas que le pertenece al jugador
                 removeFichas(jugadorFichas, pos);
                 removeFichas(jugadorFichasObj, pos);
                 removeFichas(posJugadorFichasX, pos);
+                //Le da el turno a la maquina
+                turno = false;
             } else {
                 // Busca la ficha en el arrayList
                 int pos = maquinaFichas.indexOf(mayorMaquina + "-" + mayorMaquina);
                 // Agrega en el tablero la ficha
                 maquinaFichasObj.get(pos).setLocation(550, 305);
+                fichasTablero.add(maquinaFichasObj.get(pos));
                 ImageIcon icon = new ImageIcon("src/img/img-domino/" + mayorMaquina + "-" + mayorMaquina + ".png");
                 maquinaFichasObj.get(pos).setIcon(icon);
                 // Elimina las ficha en el grupo de fichas que le pertenece a la maquina
                 removeFichas(maquinaFichas, pos);
                 removeFichas(maquinaFichasObj, pos);
+                //Le da el turno al jugador
+                turno = true;
             }
         }
     }
@@ -460,7 +474,72 @@ public class vista extends javax.swing.JFrame {
         }
         return mayor;
     }
-    
+
+    //comenzar el turno
+    public void comenzarTurno() {
+        turno = false;
+        posIzqX = 480;
+        posIzqY = 330;
+        posDerX = 587;
+        posDerY = 330;
+    }
+
+    //Llama a la clase rotar y rota la imagen
+    public void rotar(JLabel ficha, double grados, int w, int h) throws IOException {
+        File img = new File("src/img/img-domino/" + ficha.getName() + ".png");
+        BufferedImage bufferedImage = ImageIO.read(img);
+        ImageIcon imageIcon = new ImageIcon(rotar.rotate(bufferedImage, grados));
+        ficha.setIcon(imageIcon);
+        ficha.setSize(w, h);
+    }
+
+    // Aqui se verifica que la ficha pueda ser posicionada y tambien se posiciona en el tablero
+    public boolean verificarFicha(JLabel ficha) throws IOException {
+        String name[] = ficha.getName().split("-");
+        JLabel fichaIzq = fichasTablero.get(0);
+        JLabel fichaDer = fichasTablero.get(fichasTablero.size() - 1);
+
+        // Obtiene el numero de las fichas que estan en el tablero
+        String nameFichaIzq[] = fichaIzq.getName().split("-");
+        String nameFichaDer[] = fichaDer.getName().split("-");
+
+        if (name[0].equals(nameFichaDer[1])) {
+            rotar(ficha, 90, 68, 35);
+            ficha.setLocation(posDerX, posDerY);
+            posDerX = posDerX + 70;
+            fichasTablero.add(ficha);
+            return true;
+        }
+
+        if (name[1].equals(nameFichaDer[1])) {
+            rotar(ficha, 270, 68, 35);
+            ficha.setLocation(posDerX, posDerY);
+            ficha.setName(name[1] + "-" + name[0]);
+            posDerX = posDerX + 70;
+            fichasTablero.add(ficha);
+            return true;
+        }
+
+        if (name[0].equals(nameFichaIzq[0])) {
+            rotar(ficha, 270, 68, 35);
+            ficha.setLocation(posIzqX, posIzqY);
+            ficha.setName(name[1] + "-" + name[0]);
+            posIzqX = posIzqX - 70;
+            fichasTablero.add(0, ficha);
+            return true;
+        }
+
+        if (name[1].equals(nameFichaIzq[0])) {
+            rotar(ficha, 90, 68, 35);
+            ficha.setLocation(posIzqX, posIzqY);
+            posIzqX = posIzqX - 70;
+            fichasTablero.add(0, ficha);
+            return true;
+        }
+
+        return false;
+    }
+
     // Se encarga de abrir las ventanas
     void abrirVentana(JFrame frame, int w, int h) {
         frame.setSize(w, h);
@@ -478,6 +557,15 @@ public class vista extends javax.swing.JFrame {
         registroUser.setText("");
     }
 
+    public int obtenerFichaPos(ArrayList<Integer> array, int posX, int posY) {
+        int pos = -1;
+        for (int i = 0; i < array.size(); i++) {
+            if ((array.get(i) <= posX && posX <= (array.get(i) + 35)) && (550 <= posY && posY <= 618)) {
+                pos = i;
+            }
+        }
+        return pos;
+    }
 
     private void btnRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistroActionPerformed
         try {
@@ -537,6 +625,7 @@ public class vista extends javax.swing.JFrame {
         ficha.distribuirFichas(false);
         ficha.mostrarFichas(false, user);
         llenarArray();
+        comenzarTurno();
         comenzarJuego();
         abrirVentana(frameTablero, 1220, 655);
         limpiar();
@@ -549,6 +638,7 @@ public class vista extends javax.swing.JFrame {
         ficha.generarFichas();
         ficha.distribuirFichas(true);
         ficha.mostrarFichas(true, user);
+        turno = false;
         llenarArray();
         abrirVentana(frameTablero, 1220, 655);
         limpiar();
@@ -560,16 +650,20 @@ public class vista extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel19MouseClicked
 
     private void tableroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableroMouseClicked
-        int pos = -1;
-        for (int i = 0; i < posJugadorFichasX.size(); i++) {
-            if ((posJugadorFichasX.get(i) <= evt.getX() && evt.getX() <= (posJugadorFichasX.get(i) + 35)) && (550 <= evt.getY() && evt.getY() <= 618)) {
-                pos = i;
-            }
-        }
+        if (turno != false) {
+            int posJugador = obtenerFichaPos(posJugadorFichasX, evt.getX(), evt.getY());
+            if (posJugador != -1) {
 
-        if (pos != -1) {
-            jugadorFichasObj.get(pos).setLocation(191, 206);
-            System.out.println(jugadorFichasObj.get(pos).getName());
+                try {
+                    if (verificarFicha(jugadorFichasObj.get(posJugador))) {
+                        turno = false;
+                    }
+                } catch (IOException ex) {
+                    Logger.getLogger(vista.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Turno de la maquina");
         }
     }//GEN-LAST:event_tableroMouseClicked
 
