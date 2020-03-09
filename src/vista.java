@@ -50,7 +50,9 @@ public class vista extends javax.swing.JFrame {
 
     //Variables para comenzar la partida
     boolean turno = false;
+    boolean tomar = false;
     ArrayList<JLabel> fichasTablero = new ArrayList<JLabel>();
+
     // Posiciones iniciales de fichas
     int posIzqX = 480;
     int posIzqY = 330;
@@ -404,6 +406,7 @@ public class vista extends javax.swing.JFrame {
         posFichaSobrantesY = ficha.getFichasSobrantesPosY();
     }
 
+    //Vacia los array de partidas anteriores
     public void limpiarArray() {
         // Limpia el arrayList de los elementos que aun pueden contener
         jugadorFichas.clear();
@@ -419,12 +422,11 @@ public class vista extends javax.swing.JFrame {
         fichasTablero.clear();
     }
 
+    // rutina que agrega la primera ficha a la partida
     public void comenzarJuego() {
         // Busca quien tiene el par mayor entre la maquina y el jugador
         int mayorJugador = mayor(jugadorFichas);
         int mayorMaquina = mayor(maquinaFichas);
-        System.out.println(mayorJugador);
-        System.out.println(mayorMaquina);
         fichasTablero.clear();
         // Si existe un par mayor 
         if (mayorJugador >= 0 || mayorMaquina >= 0) {
@@ -458,10 +460,12 @@ public class vista extends javax.swing.JFrame {
         }
     }
 
+    // Elimina la ficha de la maquina o jugador
     public void removeFichas(ArrayList array, int pos) {
         array.remove(pos);
     }
 
+    //Escoge la ficha par mayor
     public int mayor(ArrayList<String> array) {
         int mayor = -99;
         for (int i = 0; i < array.size(); i++) {
@@ -491,6 +495,21 @@ public class vista extends javax.swing.JFrame {
         ImageIcon imageIcon = new ImageIcon(rotar.rotate(bufferedImage, grados));
         ficha.setIcon(imageIcon);
         ficha.setSize(w, h);
+    }
+
+    // Verifica si el jugador o la maquina tiene una ficha que le sirva
+    public boolean comprobar(ArrayList<JLabel> array) {
+        //Obtiene las fichas que están en el extremo
+        String fichaIzq = fichasTablero.get(0).getName().split("-")[0];
+        String fichaDer = fichasTablero.get(fichasTablero.size() - 1).getName().split("-")[1];
+
+        for (int i = 0; i < array.size(); i++) {
+            String ficha[] = array.get(i).getName().split("-");
+            if (ficha[0].equals(fichaIzq) || ficha[0].equals(fichaDer) || ficha[1].equals(fichaIzq) || ficha[1].equals(fichaDer)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Aqui se verifica que la ficha pueda ser posicionada y tambien se posiciona en el tablero
@@ -557,10 +576,22 @@ public class vista extends javax.swing.JFrame {
         registroUser.setText("");
     }
 
-    public int obtenerFichaPos(ArrayList<Integer> array, int posX, int posY) {
+    //Obtiene la ficha del jugador seleccionada
+    public int obtenerFichaJugadorPos(ArrayList<Integer> array, int posX, int posY) {
         int pos = -1;
         for (int i = 0; i < array.size(); i++) {
             if ((array.get(i) <= posX && posX <= (array.get(i) + 35)) && (550 <= posY && posY <= 618)) {
+                pos = i;
+            }
+        }
+        return pos;
+    }
+
+    //Obtiene la ficha sobrante seleccionada
+    public int obtenerFichaSobrantesPos(ArrayList<Integer> array, int posX, int posY) {
+        int pos = -1;
+        for (int i = 0; i < array.size(); i++) {
+            if ((1140 <= posX && posX <= 1208) && (posY >= array.get(i) && posY <= (array.get(i) + 35))) {
                 pos = i;
             }
         }
@@ -633,7 +664,6 @@ public class vista extends javax.swing.JFrame {
 
     // Boton que se encargara de activar el juego 2vs1
     private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
-
         ficha.tablero(tablero);
         ficha.generarFichas();
         ficha.distribuirFichas(true);
@@ -650,21 +680,54 @@ public class vista extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel19MouseClicked
 
     private void tableroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableroMouseClicked
-        if (turno != false) {
-            int posJugador = obtenerFichaPos(posJugadorFichasX, evt.getX(), evt.getY());
-            if (posJugador != -1) {
 
-                try {
-                    if (verificarFicha(jugadorFichasObj.get(posJugador))) {
-                        turno = false;
+        if (turno) {
+
+            int posJugador = obtenerFichaJugadorPos(posJugadorFichasX, evt.getX(), evt.getY());
+            tomar = comprobar(jugadorFichasObj);
+            // detecta si se selecciono una ficha
+            if (posJugador != -1) {
+                if (tomar) {
+                    try {
+                        if (verificarFicha(jugadorFichasObj.get(posJugador))) {
+                            jugadorFichasObj.remove(posJugador);
+                            posJugadorFichasX.remove(posJugador);
+                            turno = false;
+                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(vista.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } catch (IOException ex) {
-                    Logger.getLogger(vista.class.getName()).log(Level.SEVERE, null, ex);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No tiene fichas usables, escoja una ficha entre las sobrantes");
                 }
             }
+
+            // Obtiene la ficha sobrante que el jugador seleccione
+            if (!tomar) {
+                //Obtiene la ficha que el jugador selecciono
+                int pos = obtenerFichaSobrantesPos(posFichaSobrantesY, evt.getX(), evt.getY());
+                //Verifica que existe la ficha seleccionada
+                if (pos != -1) {
+                    try {
+                        //Mueve la ficha del lado de las sobrantes a las fichas del jugador
+                        fichasSobrantesObj.get(pos).setLocation(posJugadorFichasX.get(posJugadorFichasX.size() - 1) + 50, 550);
+                        //Añade la ficha a la ficha del jugador
+                        posJugadorFichasX.add(posJugadorFichasX.get(posJugadorFichasX.size() - 1) + 50);
+                        jugadorFichasObj.add(fichasSobrantesObj.get(pos));
+                        rotar(jugadorFichasObj.get(jugadorFichasObj.size() - 1), 180, 37, 68);
+                        //Borra la ficha de las sobrantes
+                        fichasSobrantesObj.remove(pos);
+                        posFichaSobrantesY.remove(pos);
+                    } catch (IOException ex) {
+                        Logger.getLogger(vista.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+
         } else {
             JOptionPane.showMessageDialog(null, "Turno de la maquina");
         }
+
     }//GEN-LAST:event_tableroMouseClicked
 
     /**

@@ -146,6 +146,7 @@ public class Ficha {
             // Obtiene el JLabel que retorna la funcion (Se le envia la ruta de la image, el tamaño) y le asigna la posicion en el tablero
             fichasSobrantesObj.add(crearLabel("src/img/img-domino/volteada-90.png", 68, 35, fichasSobrante.get(i)));
             fichasSobrantesObj.get(i).setLocation(1140, inicio + i * 40);
+            posFichaSobrantesY.add(inicio + i * 40);
         }
     }
 
