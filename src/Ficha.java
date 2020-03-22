@@ -176,7 +176,6 @@ public class Ficha {
     }
 
     //Enviar los Objetos que contienen las fichas
-
     public ArrayList<String> getFichasJugador() {
         return jugadorFichas;
     }
@@ -204,15 +203,15 @@ public class Ficha {
     public ArrayList<JLabel> getFichasMaquina2Obj() {
         return maquina2FichasObj;
     }
-    
+
     public ArrayList<JLabel> getFichasSobrantesObj() {
         return fichasSobrantesObj;
     }
-    
-     public ArrayList<Integer> getFichasJugadorPosX() {
+
+    public ArrayList<Integer> getFichasJugadorPosX() {
         return posJugadorFichasX;
     }
-    
+
     public ArrayList<Integer> getFichasSobrantesPosY() {
         return posFichaSobrantesY;
     }
