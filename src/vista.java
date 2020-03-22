@@ -156,14 +156,14 @@ public class vista extends javax.swing.JFrame {
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(50, 69, 89));
-        jLabel17.setText("Jugar 1 vs 2");
+        jLabel17.setText("Jugar 1 VS 2");
         jLabel17.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel17MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 120, 130, -1));
+        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 120, 140, -1));
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(50, 69, 89));
@@ -560,6 +560,7 @@ public class vista extends javax.swing.JFrame {
                         } else {
                             colocarPrimerFicha(mayorMaquina, maquinaFichas, maquinaFichasObj);
                             turno = 0;
+                            labelTurno.setText("Turno de "+user);
                             timer.cancel();
                             timer.purge();
                         }
@@ -622,6 +623,7 @@ public class vista extends javax.swing.JFrame {
                         if (mayorMaquina2 > mayorMaquina && mayorMaquina2 > mayorJugador) {
                             colocarPrimerFicha(mayorMaquina2, maquina2Fichas, maquina2FichasObj);
                             turno = 0;
+                            labelTurno.setText("Turno de "+user);
                             timer.cancel();
                             timer.purge();
                         }
@@ -912,6 +914,7 @@ public class vista extends javax.swing.JFrame {
                                 maquina2();
                             } else {
                                 turno = 0;
+                                labelTurno.setText("Turno de "+user);
                             }
                         }
                         gameOver();
@@ -937,6 +940,7 @@ public class vista extends javax.swing.JFrame {
                                         //Si se esta jugando 1vs le da el turno al jugador
                                         if (!cantMaquina) {
                                             turno = 0;
+                                            labelTurno.setText("Turno de "+user);
                                         } else {
                                             //Si se juega 2vs1 le y el turno es de maquina1 le da el turno a maquina2 si no
                                             if (maquina) {
@@ -944,6 +948,7 @@ public class vista extends javax.swing.JFrame {
                                                 turno = 2;
                                             } else {
                                                 turno = 0;
+                                                labelTurno.setText("Turno de "+user);
                                             }
                                         }
                                         break;
@@ -1111,7 +1116,7 @@ public class vista extends javax.swing.JFrame {
     }
 
     public void colorearBorder(JLabel ficha) {
-        //Le da border de colores a las fichas azul si es las del jugador y naranja si es de la maquina
+        //Le da border de colores a las fichas 
         if (turno == 0) {
             ficha.setBorder(BorderFactory.createLineBorder(new Color(45, 131, 223), 1));
         }
@@ -1121,7 +1126,7 @@ public class vista extends javax.swing.JFrame {
         }
 
         if (turno == 2) {
-            ficha.setBorder(BorderFactory.createLineBorder(new Color(39, 55, 70), 1));
+            ficha.setBorder(BorderFactory.createLineBorder(new Color(23, 165, 137), 1));
 
         }
     }
@@ -1367,8 +1372,7 @@ public class vista extends javax.swing.JFrame {
 
         if (!gameover) {
             // Solo entra cuando es el turno del jugador
-            if (turno == 0) {
-                labelTurno.setText("Turno de "+user);
+            if (turno == 0) {              
                 int posJugador = obtenerFichaJugadorPos(posJugadorFichasX, evt.getX(), evt.getY());
                 // Comprueba si el jugador tiene una ficha
                 tomar = comprobar(jugadorFichasObj);
