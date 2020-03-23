@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
  */
 public class rotarImg {
 
+    //Esta funcion se encarga de rotar las imagenes dependiendo de los grados enviados como paramatros
     public BufferedImage rotate(BufferedImage image, Double degrees) {
         // Calculate the new size of the image based on the angle of rotaion
         double radians = Math.toRadians(degrees);

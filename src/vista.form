@@ -284,7 +284,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="59" green="45" red="32" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Puntos Maquina 2: "/>
+                <Property name="text" type="java.lang.String" value="Puntos Maquina 1: "/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -316,7 +316,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="59" green="45" red="32" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Puntos Maquina 1: "/>
+                <Property name="text" type="java.lang.String" value="Puntos Maquina 0: "/>
               </Properties>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">

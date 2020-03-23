@@ -10,9 +10,9 @@ public class tablero {
     // Dibuja en el tablero todo lo que no sea una ficha
     public void pintarTablero(JPanel tablero, String user) {
         // Dibuja los label en el tablero
-        tablero.add(labelTablero("Fichas maquina 0", 200, 150, 150, 25));
-        tablero.add(labelTablero("Fichas maquina 1", 750, 150, 150, 25));
-        tablero.add(labelTablero("Fichas del jugador " + user, 480, 520, 220, 25));
+        tablero.add(labelTablero("FICHAS MAQUINA 0", 200, 155, 175, 25));
+        tablero.add(labelTablero("FICHAS MAQUINA 1", 750, 155, 175, 25));
+        tablero.add(labelTablero("FICHAS DE " + user, 480, 520, 220, 25));
         // Sibuja los separadores
         tablero.add(SeparatorTablero(0, 180, 1120, 10, false));
         tablero.add(SeparatorTablero(0, 500, 1120, 10, false));

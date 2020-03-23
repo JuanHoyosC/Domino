@@ -66,6 +66,7 @@ public class Ficha {
         fichasSobrante = fichas;
     }
 
+    //Funcion encargada de repartis las fichas en forma aleatoria
     public void repartirFichas(ArrayList array) {
         while (array.size() != 7 && fichas.size() != 0) {
             // Aqui se agregaran las fichas de forma aleatorias al jugador
@@ -94,6 +95,7 @@ public class Ficha {
         }
     }
 
+    //subrutina que dibuja las fichas del jugador en el tablero
     public void dibujarFichasJugador() {
         int inicio = 10;
         // Ciclo que se encarga de añadir todas las fichas del jugador al tablero
@@ -105,6 +107,7 @@ public class Ficha {
         }
     }
 
+     //subrutina que dibuja las fichas de la maquina 0 en el tablero
     public void dibujarFichasMaquina() {
         int inicio = 10;
         int contador = 0;
