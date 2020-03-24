@@ -49,6 +49,31 @@ public class userModel {
         return false;
     }
 
+    public boolean actualizarUser(String nombre, String contraseña, String nombreActual, String contraseñaActual) {
+        Connection con = null;
+        try {
+            con = conexion.getCon();
+            // Consulta 
+            ps = con.prepareStatement("UPDATE user SET nickname=?, contraseña=? WHERE nickname=? and contraseña=?");
+            // Envia los datos a la consulta
+            ps.setString(1, nombreActual);
+            ps.setString(2, contraseñaActual);
+            ps.setString(3, nombre);
+            ps.setString(4, contraseña);
+
+
+            //Ejecuta el query
+            int res = ps.executeUpdate();
+            if (res > 0) {
+                return true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(userModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+    }
+
     public boolean guardarUser(String nombre, String contraseña) {
         Connection con = null;
         try {
@@ -159,11 +184,6 @@ public class userModel {
             con = conexion.getCon();
             // Consulta 
             ps = con.prepareStatement("INSERT INTO puntos (usuario, puntosUser, puntosMaquina1, puntosMaquina2) VALUES (?,?,?,?)");
-            // Envia los datos a la consulta
-            System.out.println(puntosJ);
-            System.out.println(puntosM1);
-            System.out.println(puntosM2);
-            System.out.println(nombre);
             ps.setString(1, nombre);
             ps.setInt(2, puntosJ);
             ps.setInt(3, puntosM1);
@@ -172,10 +192,7 @@ public class userModel {
             //Ejecuta el query
             int res = ps.executeUpdate();
 
-            // Muestra si la consulta fue exitosa
-            if (res > 0) {
-                System.out.println("Datos guardados");
-            }
+
 
         } catch (SQLException ex) {
             Logger.getLogger(userModel.class.getName()).log(Level.SEVERE, null, ex);

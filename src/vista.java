@@ -50,6 +50,7 @@ public class vista extends javax.swing.JFrame {
 
     // Informacion del jugador
     String user = "";
+    String pass = "";
 
     //Variables para comenzar la partida
     int turno = 0;
@@ -115,6 +116,13 @@ public class vista extends javax.swing.JFrame {
         lblPuntos3 = new javax.swing.JLabel();
         pj = new javax.swing.JLabel();
         pm1 = new javax.swing.JLabel();
+        frameConfiguracion = new javax.swing.JFrame();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        nombreActualizacion = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
+        contraseñaActualizacion = new javax.swing.JPasswordField();
         slider = new rojerusan.RSPanelsSlider();
         panelLogin = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
@@ -207,6 +215,12 @@ public class vista extends javax.swing.JFrame {
         jLabel24.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(50, 69, 89));
         jLabel24.setText("Configuración");
+        jLabel24.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jLabel24.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel24MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(117, 200, 150, -1));
 
         javax.swing.GroupLayout salaEsperaLayout = new javax.swing.GroupLayout(salaEspera.getContentPane());
@@ -305,6 +319,66 @@ public class vista extends javax.swing.JFrame {
         framePuntosLayout.setVerticalGroup(
             framePuntosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+        );
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel16.setText("Nombre de usuario:");
+
+        jLabel25.setText("Contraseña");
+
+        jButton2.setText("Actualizar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel16)
+                            .addComponent(jLabel25))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(nombreActualizacion)
+                            .addComponent(contraseñaActualizacion, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))))
+                .addContainerGap(22, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(nombreActualizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel25)
+                    .addComponent(contraseñaActualizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addComponent(jButton2)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout frameConfiguracionLayout = new javax.swing.GroupLayout(frameConfiguracion.getContentPane());
+        frameConfiguracion.getContentPane().setLayout(frameConfiguracionLayout);
+        frameConfiguracionLayout.setHorizontalGroup(
+            frameConfiguracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        frameConfiguracionLayout.setVerticalGroup(
+            frameConfiguracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -540,6 +614,53 @@ public class vista extends javax.swing.JFrame {
         mostrarTurno();
     }
 
+    public void comenzar1vs1() {
+        ficha.tablero(tablero);
+        ficha.generarFichas();
+        ficha.distribuirFichas(false);
+        ficha.mostrarFichas(false, user);
+        cantMaquina = false;
+        //Llena los array
+        llenarArray();
+        //Hace las configuraciones iniciales del juego
+        comenzarTurno();
+        try {
+            //Hace que la primera ficha del juego se coloque automaticamente
+            comenzarJuego(false);
+
+        } catch (IOException ex) {
+            Logger.getLogger(vista.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        //Muestra el tablero en pantalla
+        abrirVentana(frameTablero, 1220, 655);
+        limpiar();
+    }
+
+    public void comenzar1vs2() {
+        ficha.tablero(tablero);
+        ficha.generarFichas();
+        ficha.distribuirFichas(true);
+        ficha.mostrarFichas(true, user);
+        cantMaquina = true;
+        gameover = false;
+        //Llena los array
+        llenarArray();
+        //Hace las configuraciones iniciales del juego
+        comenzarTurno();
+        try {
+            //Hace que la primera ficha del juego se coloque automaticamente
+            comenzarJuego(true);
+
+        } catch (IOException ex) {
+            Logger.getLogger(vista.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+        //Muestra el tablero en pantalla
+        abrirVentana(frameTablero, 1220, 655);
+        limpiar();
+    }
+
     // rutina que agrega la primera ficha a la partida
     public void comenzarJuego(boolean maquina2) throws IOException {
         if (!maquina2) {
@@ -569,9 +690,9 @@ public class vista extends javax.swing.JFrame {
                             colocarPrimerFicha(mayorJugador, jugadorFichas, jugadorFichasObj);
                             //Le da el turno a la maquina
                             turno = 1;
-                            maquina0();
                             timer.cancel();
                             timer.purge();
+                            maquina0();
                         } else {
                             colocarPrimerFicha(mayorMaquina, maquinaFichas, maquinaFichasObj);
                             turno = 0;
@@ -591,9 +712,9 @@ public class vista extends javax.swing.JFrame {
                         removeFichas(posJugadorFichasX, pos);
                         //Le da el turno a la maquina
                         turno = 1;
-                        maquina0();
                         timer.cancel();
                         timer.purge();
+                        maquina0();
                     }
                 } catch (Exception e) {
                 }
@@ -622,17 +743,16 @@ public class vista extends javax.swing.JFrame {
                             removeFichas(posJugadorFichasX, pos);
                             colocarPrimerFicha(mayorJugador, jugadorFichas, jugadorFichasObj);
                             turno = 1;
-                            maquina0();
                             timer.cancel();
                             timer.purge();
+                            maquina0();
                         }
 
                         if (mayorMaquina > mayorMaquina2 && mayorMaquina > mayorJugador) {
                             colocarPrimerFicha(mayorMaquina, maquinaFichas, maquinaFichasObj);
-                            turno = 2;
-                            maquina1();
                             timer.cancel();
                             timer.purge();
+                            maquina1();
                         }
 
                         if (mayorMaquina2 > mayorMaquina && mayorMaquina2 > mayorJugador) {
@@ -653,10 +773,9 @@ public class vista extends javax.swing.JFrame {
                         removeFichas(jugadorFichas, pos);
                         removeFichas(jugadorFichasObj, pos);
                         removeFichas(posJugadorFichasX, pos);
-                        turno = 1;
-                        maquina0();
                         timer.cancel();
                         timer.purge();
+                        maquina0();
                     }
                 } catch (Exception e) {
                 }
@@ -702,6 +821,37 @@ public class vista extends javax.swing.JFrame {
         }
     }
 
+    //Muestra opciones cuando hay un game over
+    public void opcionesGameOver() {
+        try {
+            String[] opciones = {
+                "Jugar 1vs1",
+                "Jugar 1vs2",
+                "Salir"};
+
+            String resp = (String) JOptionPane.showInputDialog(null, "¿Que hacer?", "Opciones", JOptionPane.DEFAULT_OPTION, null, opciones, opciones[0]);
+            // Si escoge 1vs1 puede jugar de nuevo en version 1vs1
+            if (resp.equals("Jugar 1vs1")) {
+                frameTablero.setVisible(false);
+                limpiarArray();
+                comenzar1vs1();
+            }
+
+            // Si escoge 1vs2 puede jugar de nuevo en version 1vs2
+            if (resp.equals("Jugar 1vs2")) {
+                frameTablero.setVisible(false);
+                limpiarArray();
+                comenzar1vs2();
+            }
+
+            //Sadra del tablero si le da a la opcion de salir
+            if (resp.equals("Salir")) {
+                frameTablero.setVisible(false);
+            }
+        } catch (Exception e) {
+        }
+    }
+
     // Verifica el gameOver cuando se juega 1vs1
     public void gameOver1VS1() throws IOException {
         boolean jugador = true;
@@ -740,6 +890,7 @@ public class vista extends javax.swing.JFrame {
             //Muestra las fichas de la maquina
             verMaquina(maquinaFichasObj);
             gameover = true;
+            opcionesGameOver();
         } else {
             //Si la maquina no tiene fichas gana
             if (ganador(maquinaFichasObj)) {
@@ -749,6 +900,7 @@ public class vista extends javax.swing.JFrame {
                 //Actualiza la base de datos
                 md.updatePuntos(user, puntosJugador, puntosM0, puntosM1);
                 gameover = true;
+                opcionesGameOver();
             } else {
                 // Si el jugador no tiene fichas gana
                 if (ganador(jugadorFichasObj)) {
@@ -760,6 +912,7 @@ public class vista extends javax.swing.JFrame {
                     //Muestra las fichas de la maquina
                     verMaquina(maquinaFichasObj);
                     gameover = true;
+                    opcionesGameOver();
                 } else {
                     //Si el jugador se encuentra atascado le da el turno a la maquina 0
                     if (!jugador && fichasSobrantesObj.size() == 0) {
@@ -774,6 +927,7 @@ public class vista extends javax.swing.JFrame {
 
     // Verifica el gameOver cuando se juega 2vs1
     public void gameOver2VS1() throws IOException {
+        //Variables que comprobaran si el jugador tiene fichas que colocar en el tablero
         boolean jugador = true;
         boolean maquina1 = true;
         boolean maquina2 = true;
@@ -824,6 +978,7 @@ public class vista extends javax.swing.JFrame {
             verMaquina(maquinaFichasObj);
             verMaquina(maquina2FichasObj);
             gameover = true;
+            opcionesGameOver();
         } else {
             //Si la maquina no tiene fichas gana
             if (ganador(maquinaFichasObj)) {
@@ -832,6 +987,7 @@ public class vista extends javax.swing.JFrame {
                 md.updatePuntos(user, puntosJugador, puntosM0, puntosM1);
                 verMaquina(maquina2FichasObj);
                 gameover = true;
+                opcionesGameOver();
             } else {
                 // Si el jugador no tiene fichas ganas
                 if (ganador(jugadorFichasObj)) {
@@ -842,6 +998,7 @@ public class vista extends javax.swing.JFrame {
                     verMaquina(maquinaFichasObj);
                     verMaquina(maquina2FichasObj);
                     gameover = true;
+                    opcionesGameOver();
                 } else {
                     // Si el jugador no tiene fichas ganas
                     if (ganador(maquina2FichasObj)) {
@@ -851,9 +1008,10 @@ public class vista extends javax.swing.JFrame {
                         //Muestra las fichas de las maquinas
                         verMaquina(maquinaFichasObj);
                         gameover = true;
+                        opcionesGameOver();
                     } else {
                         //Si el jugador se encuentra atascado le da el turno a la maquina 0
-                        if (!jugador && fichasSobrantesObj.size() == 0) {
+                        if (!jugador && fichasSobrantesObj.size() == 0 && turno == 0) {
                             turno = 1;
                             maquina0();
                         }
@@ -910,6 +1068,7 @@ public class vista extends javax.swing.JFrame {
                 y1 = 10;
             }
 
+            // Envia los datos de la maquina 0 para hacer las jugadas
             maquina(maquinaFichasObj, true, x, y1);
         }
     }
@@ -920,7 +1079,7 @@ public class vista extends javax.swing.JFrame {
             labelTurno.setText("TURNO DE LA MAQUINA 1");
             int x;
             turno = 2;
-            //Cuando hay fichas nuevas organiza las fichas en el lugar de la maquina 1
+            //Cuando hay fichas nuevas, organiza las fichas en el lugar de la maquina 1
             System.out.println(maquina2FichasObj.get(maquina2FichasObj.size() - 1).getX());
             if ((maquina2FichasObj.get(maquina2FichasObj.size() - 1).getX() + 50) == 1080) {
                 y2 = 90;
@@ -932,12 +1091,12 @@ public class vista extends javax.swing.JFrame {
             if ((maquina2FichasObj.get(maquina2FichasObj.size() - 1).getX() + 50) != 1080 && (maquina2FichasObj.get(maquina2FichasObj.size() - 1).getY()) == 10) {
                 y2 = 10;
             }
-
+            //Envia la información de la maquina 1 para hacer las jugadas
             maquina(maquina2FichasObj, false, x, y2);
         }
     }
 
-    // Subrutina encargada del control de la maquina
+    // Subrutina encargada del control de la maquina ya sea la maquina 0 o la maquina 1
     public void maquina(ArrayList<JLabel> arrayObj, boolean maquina, int x, int y) throws IOException {
         if (!gameover) {
             Timer timer = new Timer();
@@ -966,8 +1125,6 @@ public class vista extends javax.swing.JFrame {
                                     ///Detiene la tarea de poner las fichas cada n segundos
                                     timer.cancel();
                                     timer.purge();
-                                    //Verifica primero si el juego termino antes de darle el turno a la maquina 1
-                                    gameOver();
                                     maquina1();
                                     // Si la maquina 1 quedo atascada le da el turno al jugador
                                 } else {
@@ -1044,19 +1201,20 @@ public class vista extends javax.swing.JFrame {
                                 removeFichas(fichasSobrantesObj, rnd);
                                 removeFichas(posFichaSobrantesY, rnd);
                                 // Detiene la tarea de poner las fichas
-                                timer.cancel();
-                                timer.purge();
-                                gameOver();
+
                                 // Si la maquina1 es la que tiene el turno llama a la maquina1 si no se llama a la funcion de la maquina2
                                 if (maquina) {
                                     // Detiene la tarea de poner las fichas
                                     timer.cancel();
                                     timer.purge();
+                                    gameOver();
                                     maquina0();
                                 } else {
                                     // Detiene la tarea de poner las fichas
                                     timer.cancel();
                                     timer.purge();
+                                    turno = 2;
+                                    gameOver();
                                     maquina1();
                                 }
 
@@ -1089,6 +1247,7 @@ public class vista extends javax.swing.JFrame {
     // Verifica si el jugador o la maquina tiene una ficha que le sirva
     public boolean comprobar(ArrayList<JLabel> array) {
         //Obtiene las fichas que están en el extremo del tablero
+        System.out.println(fichasTablero.size());
         String fichaIzq = fichasTablero.get(0).getName().split("-")[0];
         String fichaDer = fichasTablero.get(fichasTablero.size() - 1).getName().split("-")[1];
 
@@ -1367,6 +1526,7 @@ public class vista extends javax.swing.JFrame {
                     abrirVentana(salaEspera, 384, 320);
                     this.setVisible(false);
                     user = loginUser.getText().trim();
+                    pass = loginPass.getText().trim();
                     md.obtenerPuntos(user);
                     puntosJugador = md.puntosJ;
                     puntosM0 = md.puntosM1;
@@ -1394,58 +1554,22 @@ public class vista extends javax.swing.JFrame {
 
     // Boton que se encargara de activar el juego 1vs1
     private void jLabel20MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel20MouseClicked
-        ficha.tablero(tablero);
-        ficha.generarFichas();
-        ficha.distribuirFichas(false);
-        ficha.mostrarFichas(false, user);
-        cantMaquina = false;
-        //Llena los array
-        llenarArray();
-        //Hace las configuraciones iniciales del juego
-        comenzarTurno();
-        try {
-            //Hace que la primera ficha del juego se coloque automaticamente
-            comenzarJuego(false);
-
-        } catch (IOException ex) {
-            Logger.getLogger(vista.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-        //Muestra el tablero en pantalla
-        abrirVentana(frameTablero, 1220, 655);
-        limpiar();
+        comenzar1vs1();
     }//GEN-LAST:event_jLabel20MouseClicked
 
     // Boton que se encargara de activar el juego 2vs1
     private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
-        ficha.tablero(tablero);
-        ficha.generarFichas();
-        ficha.distribuirFichas(true);
-        ficha.mostrarFichas(true, user);
-        cantMaquina = true;
-        gameover = false;
-        //Llena los array
-        llenarArray();
-        //Hace las configuraciones iniciales del juego
-        comenzarTurno();
-        try {
-            //Hace que la primera ficha del juego se coloque automaticamente
-            comenzarJuego(true);
-
-        } catch (IOException ex) {
-            Logger.getLogger(vista.class
-                    .getName()).log(Level.SEVERE, null, ex);
-        }
-        //Muestra el tablero en pantalla
-        abrirVentana(frameTablero, 1220, 655);
-        limpiar();
+        comenzar1vs2();
     }//GEN-LAST:event_jLabel17MouseClicked
 
+    //Cierra la sala de espera y el frame del tablero
     private void jLabel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel19MouseClicked
         salaEspera.setVisible(false);
+        frameTablero.setVisible(false);
         abrirVentana(this, 800, 420);
     }//GEN-LAST:event_jLabel19MouseClicked
 
+    //Se encarga de saber que fichas escoge el jugador y llamar a las funciones necesarias para jugar
     private void tableroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableroMouseClicked
         //Verifica si el juego sigue en curso
         if (!gameover) {
@@ -1454,66 +1578,66 @@ public class vista extends javax.swing.JFrame {
                 int posJugador = obtenerFichaJugadorPos(posJugadorFichasX, evt.getX(), evt.getY());
                 // Comprueba si el jugador tiene una ficha
                 tomar = comprobar(jugadorFichasObj);
-                    // detecta si se selecciono una ficha
-                    if (posJugador != -1) {
-                        //Solo entra si el jugador tiene una ficha que colocar en el tablero
-                        if (tomar) {
-                            try {
-                                // Coloca la ficha en el tablero
-                                boolean ladosID = comprobarLados(jugadorFichasObj.get(posJugador));
-                                // Si la ficha se puede colocar en ambos extremos, se guarda al direccion deseada
-                                if (ladosID) {
-                                    direccion = direccion();
-                                }
-                                if (verificarFicha(jugadorFichasObj.get(posJugador), ladosID)) {
-
-                                    //Remueve las fichas del jugador
-                                    removeFichas(jugadorFichasObj, posJugador);
-                                    removeFichas(posJugadorFichasX, posJugador);
-                                    gameOver();
-                                    // Si el juego no ha acabado le da el turno a la maquina
-                                    if (!gameover) {
-                                        turno = 1;
-                                        // Funcion que hace que la maquina juegue
-                                        maquina0();
-                                    }
-                                }
-                            } catch (IOException ex) {
-                                Logger.getLogger(vista.class
-                                        .getName()).log(Level.SEVERE, null, ex);
+                // detecta si se selecciono una ficha
+                if (posJugador != -1) {
+                    //Solo entra si el jugador tiene una ficha que colocar en el tablero
+                    if (tomar) {
+                        try {
+                            // Coloca la ficha en el tablero
+                            boolean ladosID = comprobarLados(jugadorFichasObj.get(posJugador));
+                            // Si la ficha se puede colocar en ambos extremos, se guarda al direccion deseada
+                            if (ladosID) {
+                                direccion = direccion();
                             }
-                        } else {
-                            JOptionPane.showMessageDialog(null, "No tiene fichas usables, escoja una ficha entre las sobrantes");
-                        }
-                    }
+                            if (verificarFicha(jugadorFichasObj.get(posJugador), ladosID)) {
 
-                    // Obtiene la ficha sobrante que el jugador seleccione
-                    if (!tomar) {
-                        //Obtiene la ficha que el jugador selecciono
-                        int pos = obtenerFichaSobrantesPos(posFichaSobrantesY, evt.getX(), evt.getY());
-                        //Verifica que existe la ficha seleccionada
-                        if (pos != -1) {
-                            try {
-                                //Mueve la ficha del lado de las sobrantes a las fichas del jugador
-                                fichasSobrantesObj.get(pos).setLocation(posJugadorFichasX.get(posJugadorFichasX.size() - 1) + 50, 550);
-                                //Añade la ficha a la ficha del jugador
-                                posJugadorFichasX.add(posJugadorFichasX.get(posJugadorFichasX.size() - 1) + 50);
-                                jugadorFichasObj.add(fichasSobrantesObj.get(pos));
-                                //Añade la imagen de la ficha y el tamaño
-                                ImageIcon icon = new ImageIcon("src/img/img-domino/" + fichasSobrantesObj.get(pos).getName() + ".png");
-                                jugadorFichasObj.get(jugadorFichasObj.size() - 1).setIcon(icon);
-                                jugadorFichasObj.get(jugadorFichasObj.size() - 1).setSize(35, 68);
-                                //Borra la ficha de las sobrantes
-                                fichasSobrantesObj.remove(pos);
-                                posFichaSobrantesY.remove(pos);
+                                //Remueve las fichas del jugador
+                                removeFichas(jugadorFichasObj, posJugador);
+                                removeFichas(posJugadorFichasX, posJugador);
                                 gameOver();
-
-                            } catch (IOException ex) {
-                                Logger.getLogger(vista.class
-                                        .getName()).log(Level.SEVERE, null, ex);
+                                // Si el juego no ha acabado le da el turno a la maquina
+                                if (!gameover) {
+                                    turno = 1;
+                                    // Funcion que hace que la maquina juegue
+                                    maquina0();
+                                }
                             }
+                        } catch (IOException ex) {
+                            Logger.getLogger(vista.class
+                                    .getName()).log(Level.SEVERE, null, ex);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "No tiene fichas usables, escoja una ficha entre las sobrantes");
+                    }
+                }
+
+                // Obtiene la ficha sobrante que el jugador seleccione
+                if (!tomar) {
+                    //Obtiene la ficha que el jugador selecciono
+                    int pos = obtenerFichaSobrantesPos(posFichaSobrantesY, evt.getX(), evt.getY());
+                    //Verifica que existe la ficha seleccionada
+                    if (pos != -1) {
+                        try {
+                            //Mueve la ficha del lado de las sobrantes a las fichas del jugador
+                            fichasSobrantesObj.get(pos).setLocation(posJugadorFichasX.get(posJugadorFichasX.size() - 1) + 50, 550);
+                            //Añade la ficha a la ficha del jugador
+                            posJugadorFichasX.add(posJugadorFichasX.get(posJugadorFichasX.size() - 1) + 50);
+                            jugadorFichasObj.add(fichasSobrantesObj.get(pos));
+                            //Añade la imagen de la ficha y el tamaño
+                            ImageIcon icon = new ImageIcon("src/img/img-domino/" + fichasSobrantesObj.get(pos).getName() + ".png");
+                            jugadorFichasObj.get(jugadorFichasObj.size() - 1).setIcon(icon);
+                            jugadorFichasObj.get(jugadorFichasObj.size() - 1).setSize(35, 68);
+                            //Borra la ficha de las sobrantes
+                            fichasSobrantesObj.remove(pos);
+                            posFichaSobrantesY.remove(pos);
+                            gameOver();
+
+                        } catch (IOException ex) {
+                            Logger.getLogger(vista.class
+                                    .getName()).log(Level.SEVERE, null, ex);
                         }
                     }
+                }
             } else {
                 JOptionPane.showMessageDialog(null, "No es su turno");
             }
@@ -1536,6 +1660,34 @@ public class vista extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         framePuntos.setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        try {
+            if (nombreActualizacion.getText().trim().equals("") || contraseñaActualizacion.getText().trim().equals("")) {
+                JOptionPane.showMessageDialog(null, "ERROR: No deje campos vacios");
+            } else {
+                if (!md.verificarUser(nombreActualizacion.getText().trim())) {
+                    boolean res = md.actualizarUser(user, pass, nombreActualizacion.getText().trim(), contraseñaActualizacion.getText().trim());
+                    if (res) {
+                        JOptionPane.showMessageDialog(null, "OK: Usuario actualizado");
+                        user = nombreActualizacion.getText().trim();
+                        pass = contraseñaActualizacion.getText().trim();
+                        md.updatePuntos(user, puntosJugador, puntosM1, puntosM0);
+                        nombreActualizacion.setText("");
+                        contraseñaActualizacion.setText("");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "ERROR: El usuario ya se encuentra registrado");
+                }
+            }
+        } catch (Exception e) {
+        }
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jLabel24MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel24MouseClicked
+        abrirVentana(frameConfiguracion, 375, 177);
+    }//GEN-LAST:event_jLabel24MouseClicked
 
     /**
      * @param args the command line arguments
@@ -1580,9 +1732,12 @@ public class vista extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JButton btnRegistro;
+    private javax.swing.JPasswordField contraseñaActualizacion;
+    private javax.swing.JFrame frameConfiguracion;
     private javax.swing.JFrame framePuntos;
     private javax.swing.JFrame frameTablero;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1590,6 +1745,7 @@ public class vista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -1599,6 +1755,7 @@ public class vista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1608,6 +1765,7 @@ public class vista extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
@@ -1619,6 +1777,7 @@ public class vista extends javax.swing.JFrame {
     private javax.swing.JLabel lblPuntos3;
     private javax.swing.JPasswordField loginPass;
     private javax.swing.JTextField loginUser;
+    private javax.swing.JTextField nombreActualizacion;
     private javax.swing.JPanel panel;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JPanel panelRegistro;
