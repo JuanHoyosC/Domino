@@ -590,6 +590,14 @@ public class vista extends javax.swing.JFrame {
         fichasTablero.clear();
     }
 
+    // Limpia los cuadros de textos del login y de registro
+    void limpiar() {
+        loginUser.setText("");
+        loginPass.setText("");
+        registroPass.setText("");
+        registroUser.setText("");
+    }
+
     //Se inicializa el JLabel encargado de mostrar el turno
     public void mostrarTurno() {
         labelTurno.setText("");
@@ -611,6 +619,7 @@ public class vista extends javax.swing.JFrame {
         posIzq = 19;
         gameover = false;
         y1 = 10;
+        y2 = 10;
         mostrarTurno();
     }
 
@@ -672,116 +681,84 @@ public class vista extends javax.swing.JFrame {
 
     //Se encarga de escoger quien juega primero cuando es 1vs1
     public void primerJugada1vs1() throws IOException {
-        Timer timer = new Timer();
-        TimerTask tarea = new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    // Busca quien tiene el par mayor entre la maquina y el jugador
-                    int mayorJugador = mayor(jugadorFichas);
-                    int mayorMaquina = mayor(maquinaFichas);
-                    fichasTablero.clear();
-                    // Si existe un par mayor 
-                    if (mayorJugador >= 0 || mayorMaquina >= 0) {
-                        // Verifica quien tiene el par mayor, la maquina o el jugador
-                        if (mayorJugador > mayorMaquina) {
-                            int pos = jugadorFichas.indexOf(mayorJugador + "-" + mayorJugador);
-                            removeFichas(posJugadorFichasX, pos);
-                            colocarPrimerFicha(mayorJugador, jugadorFichas, jugadorFichasObj);
-                            //Le da el turno a la maquina
-                            turno = 1;
-                            timer.cancel();
-                            timer.purge();
-                            maquina0();
-                        } else {
-                            colocarPrimerFicha(mayorMaquina, maquinaFichas, maquinaFichasObj);
-                            turno = 0;
-                            labelTurno.setText("TURNO DE " + user);
-                            timer.cancel();
-                            timer.purge();
-                        }
-                    } else {
-                        // Agrega en el tablero la ficha
-                        int pos = (int) (Math.random() * jugadorFichasObj.size());
-                        jugadorFichasObj.get(pos).setLocation(552, 305);
-                        //Añade a una array las fichas que estan en el tablero
-                        fichasTablero.add(jugadorFichasObj.get(pos));
-                        // Elimina las ficha en el grupo de fichas que le pertenece al jugador
-                        removeFichas(jugadorFichas, pos);
-                        removeFichas(jugadorFichasObj, pos);
-                        removeFichas(posJugadorFichasX, pos);
-                        //Le da el turno a la maquina
-                        turno = 1;
-                        timer.cancel();
-                        timer.purge();
-                        maquina0();
-                    }
-                } catch (Exception e) {
-                }
+
+        // Busca quien tiene el par mayor entre la maquina y el jugador
+        int mayorJugador = mayor(jugadorFichas);
+        int mayorMaquina = mayor(maquinaFichas);
+        fichasTablero.clear();
+        // Si existe un par mayor 
+        if (mayorJugador >= 0 || mayorMaquina >= 0) {
+            // Verifica quien tiene el par mayor, la maquina o el jugador
+            if (mayorJugador > mayorMaquina) {
+                int pos = jugadorFichas.indexOf(mayorJugador + "-" + mayorJugador);
+                removeFichas(posJugadorFichasX, pos);
+                colocarPrimerFicha(mayorJugador, jugadorFichas, jugadorFichasObj);
+                //Le da el turno a la maquina
+                maquina0();
+            } else {
+                colocarPrimerFicha(mayorMaquina, maquinaFichas, maquinaFichasObj);
+                turno = 0;
+                labelTurno.setText("TURNO DE " + user);
             }
-        };
-        timer.schedule(tarea, 3500, 10);
+        } else {
+            // Agrega en el tablero la ficha
+            int pos = (int) (Math.random() * jugadorFichasObj.size());
+            jugadorFichasObj.get(pos).setLocation(552, 305);
+            //Añade a una array las fichas que estan en el tablero
+            fichasTablero.add(jugadorFichasObj.get(pos));
+            // Elimina las ficha en el grupo de fichas que le pertenece al jugador
+            removeFichas(jugadorFichas, pos);
+            removeFichas(jugadorFichasObj, pos);
+            removeFichas(posJugadorFichasX, pos);
+            //Le da el turno a la maquina
+            maquina0();
+        }
     }
 
     //Se encarga de escoger quien juega primero cuando es 2vs1
     public void primerJugada2vs1() throws IOException {
-        Timer timer = new Timer();
-        TimerTask tarea = new TimerTask() {
-            @Override
-            public void run() {
-                try {
-                    // Busca quien tiene el par mayor entre la maquina y el jugador
-                    int mayorJugador = mayor(jugadorFichas);
-                    int mayorMaquina = mayor(maquinaFichas);
-                    int mayorMaquina2 = mayor(maquina2Fichas);
-                    fichasTablero.clear();
-                    // Si existe un par mayor 
-                    if (mayorJugador >= 0 || mayorMaquina >= 0 || mayorMaquina2 >= 0) {
-                        // Verifica quien tiene el par mayor, la maquina o el jugador
-                        if (mayorJugador > mayorMaquina2 && mayorJugador > mayorMaquina) {
-                            int pos = jugadorFichas.indexOf(mayorJugador + "-" + mayorJugador);
-                            removeFichas(posJugadorFichasX, pos);
-                            colocarPrimerFicha(mayorJugador, jugadorFichas, jugadorFichasObj);
-                            turno = 1;
-                            timer.cancel();
-                            timer.purge();
-                            maquina0();
-                        }
 
-                        if (mayorMaquina > mayorMaquina2 && mayorMaquina > mayorJugador) {
-                            colocarPrimerFicha(mayorMaquina, maquinaFichas, maquinaFichasObj);
-                            timer.cancel();
-                            timer.purge();
-                            maquina1();
-                        }
-
-                        if (mayorMaquina2 > mayorMaquina && mayorMaquina2 > mayorJugador) {
-                            colocarPrimerFicha(mayorMaquina2, maquina2Fichas, maquina2FichasObj);
-                            turno = 0;
-                            labelTurno.setText("TURNO DE " + user);
-                            timer.cancel();
-                            timer.purge();
-                        }
-
-                    } else {
-                        // Agrega en el tablero la ficha
-                        int pos = (int) (Math.random() * jugadorFichasObj.size());
-                        jugadorFichasObj.get(pos).setLocation(552, 305);
-                        //Añade a una array las fichas que estan en el tablero
-                        fichasTablero.add(jugadorFichasObj.get(pos));
-                        // Elimina las ficha en el grupo de fichas que le pertenece al jugador
-                        removeFichas(jugadorFichas, pos);
-                        removeFichas(jugadorFichasObj, pos);
-                        removeFichas(posJugadorFichasX, pos);
-                        timer.cancel();
-                        timer.purge();
-                        maquina0();
-                    }
-                } catch (Exception e) {
-                }
+        // Busca quien tiene el par mayor entre la maquina y el jugador
+        int mayorJugador = mayor(jugadorFichas);
+        int mayorMaquina = mayor(maquinaFichas);
+        int mayorMaquina2 = mayor(maquina2Fichas);
+        fichasTablero.clear();
+        // Si existe un par mayor 
+        if (mayorJugador >= 0 || mayorMaquina >= 0 || mayorMaquina2 >= 0) {
+            // Verifica quien tiene el par mayor, la maquina o el jugador
+            if (mayorJugador > mayorMaquina2 && mayorJugador > mayorMaquina) {
+                //Pone la ficha par mayor del jugador en el tablero
+                int pos = jugadorFichas.indexOf(mayorJugador + "-" + mayorJugador);
+                removeFichas(posJugadorFichasX, pos);
+                colocarPrimerFicha(mayorJugador, jugadorFichas, jugadorFichasObj);
+                maquina0();
             }
-        };
-        timer.schedule(tarea, 3500, 10);
+
+            //Pone la ficha par mayor de la maquina 0 en el tablero
+            if (mayorMaquina > mayorMaquina2 && mayorMaquina > mayorJugador) {
+                colocarPrimerFicha(mayorMaquina, maquinaFichas, maquinaFichasObj);
+                maquina1();
+            }
+
+            //Pone la ficha par mayor de la maquina 1 en el tablero
+            if (mayorMaquina2 > mayorMaquina && mayorMaquina2 > mayorJugador) {
+                colocarPrimerFicha(mayorMaquina2, maquina2Fichas, maquina2FichasObj);
+                turno = 0;
+                labelTurno.setText("TURNO DE " + user);
+            }
+
+        } else {
+            // Agrega en el tablero la ficha
+            int pos = (int) (Math.random() * jugadorFichasObj.size());
+            jugadorFichasObj.get(pos).setLocation(552, 305);
+            //Añade a una array las fichas que estan en el tablero
+            fichasTablero.add(jugadorFichasObj.get(pos));
+            // Elimina las ficha en el grupo de fichas que le pertenece al jugador
+            removeFichas(jugadorFichas, pos);
+            removeFichas(jugadorFichasObj, pos);
+            removeFichas(posJugadorFichasX, pos);
+            maquina0();
+        }
     }
 
     // Se encarga de colocar la primera ficha en el tablero
@@ -1080,7 +1057,6 @@ public class vista extends javax.swing.JFrame {
             int x;
             turno = 2;
             //Cuando hay fichas nuevas, organiza las fichas en el lugar de la maquina 1
-            System.out.println(maquina2FichasObj.get(maquina2FichasObj.size() - 1).getX());
             if ((maquina2FichasObj.get(maquina2FichasObj.size() - 1).getX() + 50) == 1080) {
                 y2 = 90;
                 x = 530;
@@ -1143,7 +1119,8 @@ public class vista extends javax.swing.JFrame {
                                 //Busca que ficha sirve para colocar en el tablero
                                 for (int i = 0; i < arrayObj.size(); i++) {
                                     //Si la ficha se puede colocar tanto en izquierda como derecha se escoge una direccion
-                                    if (comprobarLados(arrayObj.get(i))) {
+                                    boolean lados = comprobarLados(arrayObj.get(i));
+                                    if (lados) {
                                         int rnd = (int) (Math.random() * 2);
                                         //Se elige en que direccion en que ira la ficha en el tablero
                                         if (rnd == 0) {
@@ -1153,7 +1130,7 @@ public class vista extends javax.swing.JFrame {
                                         }
                                     }
                                     //Verifica si la ficha sirve y la coloca en el tablero
-                                    if (verificarFicha(arrayObj.get(i), comprobarLados(arrayObj.get(i)))) {
+                                    if (verificarFicha(arrayObj.get(i), lados)) {
                                         arrayObj.remove(i);
                                         //Si se esta jugando 1vs le da el turno al jugador
                                         if (!cantMaquina) {
@@ -1202,7 +1179,7 @@ public class vista extends javax.swing.JFrame {
                                 removeFichas(posFichaSobrantesY, rnd);
                                 // Detiene la tarea de poner las fichas
 
-                                // Si la maquina1 es la que tiene el turno llama a la maquina1 si no se llama a la funcion de la maquina2
+                                // Si la maquina 0 es la que tiene el turno llama a la maquina 0 si no se llama a la funcion de la maquina 1
                                 if (maquina) {
                                     // Detiene la tarea de poner las fichas
                                     timer.cancel();
@@ -1213,7 +1190,6 @@ public class vista extends javax.swing.JFrame {
                                     // Detiene la tarea de poner las fichas
                                     timer.cancel();
                                     timer.purge();
-                                    turno = 2;
                                     gameOver();
                                     maquina1();
                                 }
@@ -1230,8 +1206,8 @@ public class vista extends javax.swing.JFrame {
                 }
             };
 
-            //Hace que la maquina tarde 2.5 segundos en poner la ficha
-            timer.schedule(tarea, 2500, 3000);
+            //Hace que la maquina tarde 4 segundos en poner la ficha
+            timer.schedule(tarea, 3000, 8000);
         }
     }
 
@@ -1247,7 +1223,6 @@ public class vista extends javax.swing.JFrame {
     // Verifica si el jugador o la maquina tiene una ficha que le sirva
     public boolean comprobar(ArrayList<JLabel> array) {
         //Obtiene las fichas que están en el extremo del tablero
-        System.out.println(fichasTablero.size());
         String fichaIzq = fichasTablero.get(0).getName().split("-")[0];
         String fichaDer = fichasTablero.get(fichasTablero.size() - 1).getName().split("-")[1];
 
@@ -1452,14 +1427,6 @@ public class vista extends javax.swing.JFrame {
         frame.setLocationRelativeTo(this);
         frame.setVisible(true);
         frame.setIconImage(new ImageIcon(getClass().getResource("/img/fondos/domino.png")).getImage());
-    }
-
-    // Limpia los cuadros de textos del login y de registro
-    void limpiar() {
-        loginUser.setText("");
-        loginPass.setText("");
-        registroPass.setText("");
-        registroUser.setText("");
     }
 
     //Obtiene la ficha del jugador seleccionada
