@@ -641,7 +641,7 @@ public class vista extends javax.swing.JFrame {
     //Mostrara la informacion de las jugadas de la maquina 0
     public void labelMaquina0() {
         labelMaquina0.setText("");
-        labelMaquina0.setBounds(180, 150, 250, 25);
+        labelMaquina0.setBounds(170, 150, 270, 25);
         labelMaquina0.setForeground(new Color(53, 73, 94));
         labelMaquina0.setFont(new java.awt.Font("Segoe UI", Font.BOLD, 18));
         tablero.add(labelMaquina0);
@@ -650,7 +650,7 @@ public class vista extends javax.swing.JFrame {
     //Mostrara la informacion de las jugadas de la maquina 1
     public void labelMaquina1() {
         labelMaquina1.setText("");
-        labelMaquina1.setBounds(720, 150, 250, 25);
+        labelMaquina1.setBounds(710, 150, 270, 25);
         labelMaquina1.setForeground(new Color(53, 73, 94));
         labelMaquina1.setFont(new java.awt.Font("Segoe UI", Font.BOLD, 18));
         tablero.add(labelMaquina1);
@@ -672,7 +672,7 @@ public class vista extends javax.swing.JFrame {
 
     //comenzar el turno
     public void comenzarTurno() {
-        turno = 0;
+        turno = -1;
         posDer = 21;
         posIzq = 19;
         gameover = false;
@@ -731,7 +731,7 @@ public class vista extends javax.swing.JFrame {
         };
 
         //Hace que la maquina tarde 3 segundos en poner la ficha
-        timer.schedule(tarea, 3000, 8000);
+        timer.schedule(tarea, 4000, 8000);
     }
 
     //Subrutina que se encarga de comenzar el juego 2vs1
@@ -771,7 +771,7 @@ public class vista extends javax.swing.JFrame {
         };
 
         //Hace que la maquina tarde 3 segundos en poner la ficha
-        timer.schedule(tarea, 3000, 8000);
+        timer.schedule(tarea, 4000, 8000);
     }
 
     // rutina que agrega la primera ficha a la partida
