@@ -13,19 +13,19 @@ public class Ficha {
     tablero table = new tablero();
     JPanel tablero;
     // Crea las fichas en forma de string
-    ArrayList<String> jugadorFichas = new ArrayList<String>();
-    ArrayList<String> maquinaFichas = new ArrayList<String>();
-    ArrayList<String> maquina2Fichas = new ArrayList<String>();
-    ArrayList<String> fichasSobrante = new ArrayList<String>();
+    ArrayList<String> jugadorFichas;
+    ArrayList<String> maquinaFichas;
+    ArrayList<String> maquina2Fichas;
+    ArrayList<String> fichasSobrante;
     ArrayList<String> fichas;
 
     // Contiene las posiciones de las fichas y los objetos de las fichas
-    ArrayList<Integer> posJugadorFichasX = new ArrayList<Integer>();
-    ArrayList<Integer> posFichaSobrantesY = new ArrayList<Integer>();
-    ArrayList<JLabel> jugadorFichasObj = new ArrayList<JLabel>();
-    ArrayList<JLabel> maquinaFichasObj = new ArrayList<JLabel>();
-    ArrayList<JLabel> maquina2FichasObj = new ArrayList<JLabel>();
-    ArrayList<JLabel> fichasSobrantesObj = new ArrayList<JLabel>();
+    ArrayList<Integer> posJugadorFichasX;
+    ArrayList<Integer> posFichaSobrantesY;
+    ArrayList<JLabel> jugadorFichasObj;
+    ArrayList<JLabel> maquinaFichasObj;
+    ArrayList<JLabel> maquina2FichasObj;
+    ArrayList<JLabel> fichasSobrantesObj;
 
     // Crear las fichas en forma de Strig y las guarda en un arrayList
     public void generarFichas() {
@@ -39,16 +39,17 @@ public class Ficha {
 
     public void distribuirFichas(boolean sw) {
         // Limpia el arrayList de los elementos que aun pueden contener
-        jugadorFichas.clear();
-        maquinaFichas.clear();
-        maquina2Fichas.clear();
-        fichasSobrante.clear();
-        jugadorFichasObj.clear();
-        maquinaFichasObj.clear();
-        maquina2FichasObj.clear();
-        fichasSobrantesObj.clear();
-        posJugadorFichasX.clear();
-        posFichaSobrantesY.clear();
+        jugadorFichas = new ArrayList<String>();
+        maquinaFichas = new ArrayList<String>();
+        maquina2Fichas = new ArrayList<String>();
+        fichasSobrante = new ArrayList<String>();
+        jugadorFichasObj  = new ArrayList<JLabel>();
+        maquinaFichasObj = new ArrayList<JLabel>();
+        maquina2FichasObj = new ArrayList<JLabel>();
+        fichasSobrantesObj  = new ArrayList<JLabel>();
+        posJugadorFichasX = new ArrayList<Integer>();
+        posFichaSobrantesY = new ArrayList<Integer>();
+        
 
         // Si hay una seguda maquina tambien se le reparten fichas 
         if (sw) {
@@ -79,6 +80,7 @@ public class Ficha {
     public void mostrarFichas(boolean sw, String user) {
         // Limpia el tablero de partidas anteriores
         tablero.removeAll();
+        tablero.repaint();
         // Vuelve a pintar otros objetos (Diferente a las fichas)
         table.pintarTablero(tablero, user);
         // Si hay una segunda maquina, se pintara las fichas
