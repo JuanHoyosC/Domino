@@ -23,9 +23,9 @@ public class userModel {
     int puntosM1 = 0;
     int puntosM2 = 0;
 
-    public boolean verificarUser(String nombre) {
-        Connection con = null;
+    public boolean verificarUser(String nombre) {  
         try {
+            Connection con = null;
             con = conexion.getCon();
             // Consulta 
             ps = con.prepareStatement("SELECT * FROM user WHERE nickname = ?");
@@ -49,10 +49,9 @@ public class userModel {
         return false;
     }
 
-    public boolean actualizarUser(String nombre, String contraseña, String nombreActual, String contraseñaActual) {
-        Connection con = null;
+    public boolean actualizarUser(String nombre, String contraseña, String nombreActual, String contraseñaActual) {  
         try {
-            con = conexion.getCon();
+            Connection con = conexion.getCon();
             // Consulta 
             ps = con.prepareStatement("UPDATE user SET nickname=?, contraseña=? WHERE nickname=? and contraseña=?");
             // Envia los datos a la consulta
@@ -75,9 +74,8 @@ public class userModel {
     }
 
     public boolean guardarUser(String nombre, String contraseña) {
-        Connection con = null;
         try {
-            con = conexion.getCon();
+            Connection con = conexion.getCon();
 
             // Consulta 
             ps = con.prepareStatement("INSERT INTO user (nickname, contraseña) VALUES (?,?)");
@@ -104,9 +102,8 @@ public class userModel {
     }
 
     public boolean buscarUser(String nombre, String contraseña) {
-        Connection con = null;
         try {
-            con = conexion.getCon();
+            Connection con = conexion.getCon();
             // Consulta 
             ps = con.prepareStatement("SELECT * FROM user WHERE nickname = ? and contraseña = ?");
             // Envia los datos a la consulta
@@ -132,9 +129,8 @@ public class userModel {
     }
 
     public void obtenerPuntos(String nombre) {
-        Connection con = null;
         try {
-            con = conexion.getCon();
+            Connection con = conexion.getCon();;
             // Consulta 
             ps = con.prepareStatement("SELECT * FROM puntos WHERE usuario = ?");
             // Envia los datos a la consulta
@@ -157,9 +153,8 @@ public class userModel {
     }
 
     public void updatePuntos(String nombre, int puntosJ, int puntosM1, int puntosM2) {
-        Connection con = null;
         try {
-            con = conexion.getCon();
+            Connection con = conexion.getCon();
             // Consulta 
             ps = con.prepareStatement("UPDATE puntos SET usuario=?, puntosUser=?, puntosMaquina1=?, puntosMaquina2=? WHERE usuario=?");
             // Envia los datos a la consulta
@@ -168,9 +163,13 @@ public class userModel {
             ps.setInt(3, puntosM1);
             ps.setInt(4, puntosM2);
             ps.setString(5, nombre);
+            System.out.println(nombre);
+            System.out.println(puntosJ);
+            System.out.println(puntosM1);
+            System.out.println(puntosM2);
 
             //Ejecuta el query
-            int res = ps.executeUpdate();
+            ps.executeUpdate();
 
         } catch (SQLException ex) {
             Logger.getLogger(userModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -179,9 +178,8 @@ public class userModel {
     }
 
     public void crearPuntos(String nombre, int puntosJ, int puntosM1, int puntosM2) {
-        Connection con = null;
         try {
-            con = conexion.getCon();
+            Connection con = conexion.getCon();
             // Consulta 
             ps = con.prepareStatement("INSERT INTO puntos (usuario, puntosUser, puntosMaquina1, puntosMaquina2) VALUES (?,?,?,?)");
             ps.setString(1, nombre);
@@ -190,7 +188,7 @@ public class userModel {
             ps.setInt(4, puntosM2);
 
             //Ejecuta el query
-            int res = ps.executeUpdate();
+            ps.executeUpdate();
 
 
 

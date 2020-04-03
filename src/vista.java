@@ -1096,7 +1096,6 @@ public class vista extends javax.swing.JFrame {
         //Si se congela la partida, se cuenta quien tiene menor puntaje y ese es el ganador
         if (!maquina0 && !maquina1 && !jugador && fichasSobrantesObj.isEmpty()) {
             gameover = true;
-            System.out.println("game over 1");
             int puntosM = puntos(maquinaFichasObj);
             int puntosM1 = puntos(maquina2FichasObj);
             int puntosJ = puntos(jugadorFichasObj);
@@ -1130,7 +1129,6 @@ public class vista extends javax.swing.JFrame {
         } else {
             //Si la maquina no tiene fichas gana
             if (maquinaFichasObj.isEmpty()) {
-                System.out.println("game over 2");
                 gameover = true;
                 labelTurno.setText("Gano la maquina 0");
                 puntosM0++;
@@ -1140,7 +1138,6 @@ public class vista extends javax.swing.JFrame {
             } else {
                 // Si el jugador no tiene fichas ganas
                 if (jugadorFichasObj.isEmpty()) {
-                    System.out.println("game over 3");
                     gameover = true;
                     puntosJugador++;
                     md.updatePuntos(user, puntosJugador, puntosM0, puntosM1);
@@ -1153,7 +1150,6 @@ public class vista extends javax.swing.JFrame {
 
                     // Si el jugador no tiene fichas ganas
                     if (maquina2FichasObj.isEmpty()) {
-                        System.out.println("game over 4");
                         gameover = true;
                         puntosM1++;
                         md.updatePuntos(user, puntosJugador, puntosM0, puntosM1);
@@ -1174,14 +1170,7 @@ public class vista extends javax.swing.JFrame {
         }
     }
 
-    //Verifica si se le acabo las fichas a la maquinas o al jugador
-    public boolean ganador(ArrayList<JLabel> array) {
-        if (array.size() == 0) {
-            return true;
-        }
 
-        return false;
-    }
 
     //Rutina que muestra las fichas de la maquina
     public void verMaquina(ArrayList<JLabel> arrayObj) {
@@ -1209,7 +1198,7 @@ public class vista extends javax.swing.JFrame {
             labelTurno.setText("Turno de la maquina 0");
             boolean escoger = comprobar(maquinaFichasObj);
             //Si la maquina no tiene fichas que poner cede el turno
-            if (!escoger && fichasSobrantesObj.size() == 0) {
+            if (!escoger && fichasSobrantesObj.isEmpty()) {
                 labelMaquina0.setText("La maquina 0 cedio el turno");
                 escogerSiguienteMaquina0();
             } else {
@@ -1244,7 +1233,7 @@ public class vista extends javax.swing.JFrame {
 
             boolean escoger = comprobar(maquina2FichasObj);
             //Si la maquina no tiene fichas que poner cede el turno
-            if (!escoger && fichasSobrantesObj.size() == 0) {
+            if (!escoger && fichasSobrantesObj.isEmpty()) {
                 labelMaquina1.setText("La maquina 1 cedio el turno");
                 escogerSiguienteMaquina1();
             } else {
