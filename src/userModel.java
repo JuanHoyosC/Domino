@@ -163,10 +163,6 @@ public class userModel {
             ps.setInt(3, puntosM1);
             ps.setInt(4, puntosM2);
             ps.setString(5, nombre);
-            System.out.println(nombre);
-            System.out.println(puntosJ);
-            System.out.println(puntosM1);
-            System.out.println(puntosM2);
 
             //Ejecuta el query
             ps.executeUpdate();
